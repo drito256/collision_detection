@@ -15,6 +15,7 @@ public:
     void translate(glm::vec3 new_pos);
 
     glm::vec4 get_translation(glm::mat4 mat);
+    glm::quat get_rotation(glm::mat4 mat);
 
     void update(float dt);
     void render();

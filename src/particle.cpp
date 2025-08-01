@@ -13,20 +13,6 @@ void Particle::update(float dt){
     const float gravity = 9.81f;
     glm::vec4 translation = get_translation(this->model_matrix);
 
-    glm::mat3 rot_scl = glm::mat3(this->model_matrix);
-
-    glm::vec3 scale; // remove scale component
-    scale.x = glm::length(rot_scl[0]);
-    scale.y = glm::length(rot_scl[1]);
-    scale.z = glm::length(rot_scl[2]);
-
-    glm::mat3 rot;
-    rot[0] = rot[0] / scale.x;
-    rot[1] = rot[1] / scale.y;
-    rot[2] = rot[2] / scale.z;
-
-    glm::quat q = glm::quat_cast(rot);
-
     translation =  translation + (glm::vec4(0.f, -gravity * dt * dt / 2.f, 0.f, 0.f) + 
                               glm::vec4(initial_velocity * dt, 0.0)) / 200.f;
 
@@ -50,4 +36,24 @@ void Particle::translate(glm::vec3 new_pos){
 
 glm::vec4 Particle::get_translation(glm::mat4 mat){
     return mat[3];
+}
+
+glm::quat Particle::get_rotation(glm::mat4 mat){
+
+    glm::mat3 rot_scl = glm::mat3(mat);
+
+    glm::vec3 scale; // remove scale component
+    scale.x = glm::length(rot_scl[0]);
+    scale.y = glm::length(rot_scl[1]);
+    scale.z = glm::length(rot_scl[2]);
+
+    glm::mat3 rot;
+    rot[0] = rot[0] / scale.x;
+    rot[1] = rot[1] / scale.y;
+    rot[2] = rot[2] / scale.z;
+
+    glm::quat q = glm::quat_cast(rot);
+    
+    return q;
+
 }
