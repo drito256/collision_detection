@@ -6,8 +6,13 @@ Particle::Particle(glm::mat4 model_matrix, glm::vec3 initial_velocity) :
                 initial_velocity{initial_velocity}
                 {};
 
-void Particle::update(){
-    this->model_matrix[3] += glm::vec4(initial_velocity, 0.0);
+void Particle::update(float dt){
+    const float gravity = 9.81f;
+
+    this->model_matrix[3] +=  (glm::vec4(0.f, -gravity * dt * dt / 2.f, 0.f, 0.f) + 
+                              glm::vec4(initial_velocity * dt, 0.0)) / 200.f;
+
+
 }
 
 glm::mat4 Particle::get_model(){

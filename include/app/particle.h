@@ -13,13 +13,13 @@ public:
 
     void scale(float factor);
     void translate(glm::vec3 new_pos);
-    void rotate(glm::vec3 axis, float degree);
 
-    void update();
+    void update(float dt);
     void render();
 
 private:
     glm::mat4 model_matrix;
+    float ro, phi; // rotation angles
     glm::vec3 initial_velocity;
 };
 

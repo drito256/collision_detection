@@ -5,6 +5,7 @@
 
 #include <vector>
 #include <array>
+#include <random>
 
 struct Vertex{
     glm::vec3 pos;
@@ -14,9 +15,9 @@ struct Vertex{
 class ParticleSystem{
 public:
     ParticleSystem(glm::vec3 position, int count);
-    ~ParticleSystem();
+//    ~ParticleSystem();
 
-    void update();
+    void update(float dt);
     void render(Shader s);
 
 private:
