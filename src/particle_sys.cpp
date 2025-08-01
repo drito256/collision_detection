@@ -71,12 +71,21 @@ ParticleSystem::ParticleSystem(glm::vec3 position, int count) :
     std::random_device rd;
     std::mt19937 gen(rd());
     std::uniform_real_distribution<> dist(-0.5f, 0.5f);
-    std::uniform_real_distribution<> dist2(5.f, 10.f);
+    std::uniform_real_distribution<> dist2(10.f, 15.f);
+
+
+    std::uniform_real_distribution<> dist_rot1(0.f, 1.f);
+    std::uniform_real_distribution<> dist_rot2(0.f, 1.f);
+    std::uniform_real_distribution<> dist_rot3(0.f, 1.f);
+    std::uniform_real_distribution<> dist_angle(0.f, 10.f);
+
     for(int i = 0; i < count; i++){
         glm::vec3 init_vel = {dist(gen), dist2(gen), dist(gen)};
+        glm::vec3 init_rot = {dist_rot1(gen), dist_rot2(gen), dist_rot3(gen),};
+        float angle = glm::radians(dist_angle(gen));
         glm::mat4 mat{1.0f};
 
-        Particle p{mat, init_vel};
+        Particle p{mat, init_vel, init_rot, angle};
         p.translate(position);
         p.scale(0.1f);
 
@@ -96,7 +105,7 @@ void ParticleSystem::render(Shader s){
     s.setVec3("color", glm::vec3(0.2f, 0.1f, 0.8f));
     for(int i = 0; i < particles.size(); i++){
         s.setMat4("model", particles[i].get_model());
-        glDrawArrays(GL_TRIANGLES, 0, 36);
+        glDrawArrays(GL_TRIANGLES, 0, vertices.size());
     }
 
     glBindVertexArray(0);
@@ -105,5 +114,5 @@ void ParticleSystem::render(Shader s){
 void ParticleSystem::update(float dt){
     for(int i = 0; i < particles.size(); i++){
         particles[i].update(dt);
-    }
+   }
 }

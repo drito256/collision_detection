@@ -75,12 +75,13 @@ int main()
     }
 
     Shader shader("shaders/shader.vs", "shaders/shader.fs");
-    ParticleSystem ps(glm::vec3(0.f), 1000);
+    ParticleSystem ps(glm::vec3(0.f), 100);
     Plane p(10.f);
 
     // configure global opengl state
     // -----------------------------
     glEnable(GL_DEPTH_TEST);
+    glEnable(GL_CULL_FACE);
     //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     camera.Front = glm::vec3(0.f) - camera.Position;
 
