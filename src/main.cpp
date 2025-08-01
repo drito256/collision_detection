@@ -10,7 +10,7 @@
 #include "../include/stb/stb_image.h"
 
 #include "../include/app/camera.h"
-#include "../include/app/shader.h"
+#include "../include/app/particle_sys.h"
 
 
 #include <iostream>
@@ -25,7 +25,7 @@ const unsigned int SCR_WIDTH = 1600;
 const unsigned int SCR_HEIGHT = 1200;
 
 // camera
-Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
+Camera camera(glm::vec3(0.0f, 3.0f, 3.0f));
 float lastX = SCR_WIDTH / 2.0f;
 float lastY = SCR_HEIGHT / 2.0f;
 bool firstMouse = true;
@@ -73,6 +73,9 @@ int main()
         return -1;
     }
 
+    Shader shader("shaders/shader.vs", "shaders/shader.fs");
+    ParticleSystem ps(glm::vec3(0.f), 100);
+
     // configure global opengl state
     // -----------------------------
     glEnable(GL_DEPTH_TEST);
@@ -81,15 +84,29 @@ int main()
     {float currentFrame = static_cast<float>(glfwGetTime());
         deltaTime = currentFrame - lastFrame;
         lastFrame = currentFrame;
+        glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+
 
         // input
         // -----
         processInput(window);
+        
 
+
+        glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float) SCR_WIDTH/ SCR_HEIGHT, 0.1f, 100.0f);
+        camera.Front = glm::vec3(0.f) - camera.Position;
+        glm::mat4 view = camera.GetViewMatrix();
+
+
+        ps.update();
+        shader.use();
+        shader.setMat4("projection", projection);
+        shader.setMat4("view", view);
         // render
         // ------
-        glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        ps.render(shader);
 
 
         glfwSwapBuffers(window);

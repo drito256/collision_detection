@@ -16,7 +16,7 @@ CXX = g++
 
 EXE = prog
 #IMGUI_DIR = ../include/app/
-SOURCES = main.cpp glad.c sphere.cpp
+SOURCES = main.cpp glad.c particle_sys.cpp particle.cpp
 #SOURCES += $(IMGUI_DIR)/imgui.cpp $(IMGUI_DIR)/imgui_demo.cpp $(IMGUI_DIR)/imgui_draw.cpp $(IMGUI_DIR)/imgui_tables.cpp $(IMGUI_DIR)/imgui_widgets.cpp
 #SOURCES += $(IMGUI_DIR)/imgui_impl_glfw.cpp $(IMGUI_DIR)/imgui_impl_opengl3.cpp
 OBJS = $(addsuffix .o, $(basename $(notdir $(SOURCES))))
