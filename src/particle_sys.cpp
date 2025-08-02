@@ -81,7 +81,7 @@ ParticleSystem::ParticleSystem(glm::vec3 position, int count) :
     
     std::random_device rd;
     std::mt19937 gen(rd());
-    std::uniform_real_distribution<> dist(-0.5f, 0.5f);
+    std::normal_distribution<> dist(0, 0.5f);
     std::uniform_real_distribution<> dist2(10.f, 15.f);
 
 

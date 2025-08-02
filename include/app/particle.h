@@ -11,14 +11,17 @@ public:
     
     glm::mat4 get_model();
 
-    void scale(float factor);
-    void translate(glm::vec3 new_pos);
+    void scale(const float &factor);
+    void translate(const glm::vec3 &new_pos);
 
-    glm::vec4 get_translation(glm::mat4 mat);
-    glm::quat get_rotation(glm::mat4 mat);
+    glm::vec4 get_translation(const glm::mat4 &mat);
+    glm::quat get_rotation(const glm::mat4 &mat);
+    float get_scale(const glm::mat4 &mat);
 
-    void update(float dt);
+    void update(const float &dt);
     void render();
+
+    bool check_collision(const Particle &p);
 
 private:
     glm::mat4 model_matrix;
