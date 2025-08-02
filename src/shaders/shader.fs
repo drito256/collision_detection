@@ -14,9 +14,11 @@ void main()
     vec3 lightColor = vec3(1, 1, 1);
     
     vec3 normal = normalize(norm);
+
+    vec3 ambient = vec3(0.1);
     vec3 diffuse = max(dot(normal, lightDir), 0.0) * lightColor;
     
-    vec3 final = diffuse * objectColor;
+    vec3 final = (ambient + diffuse) * objectColor;
     color = vec4(final, 1.0);
 }
 
