@@ -1,7 +1,7 @@
 #include "../include/app/plane.h"
 
 
-Plane::Plane(float scale) : scale{scale}{
+Plane::Plane(glm::vec3 position, float scale) : scale{scale}, position{position}{
 
 
     std::vector<Vertex> vertices{
@@ -25,10 +25,12 @@ Plane::Plane(float scale) : scale{scale}{
     glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(glm::vec3) * 2, vertices.data(),
                  GL_STATIC_DRAW);
 
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*) offsetof(Vertex, pos));
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), 
+                         (void*) offsetof(Vertex, pos));
     glEnableVertexAttribArray(0);
 
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*) offsetof(Vertex, norm));
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float),
+                         (void*) offsetof(Vertex, norm));
     glEnableVertexAttribArray(1);
 
 
@@ -39,10 +41,17 @@ Plane::Plane(float scale) : scale{scale}{
 void Plane::render(Shader s){
     glm::mat4 mat(1.0f);
 
+    mat[3] = glm::vec4(this->position, 1.f);;
+
     s.use();
     s.setMat4("model", mat);
-    s.setVec3("objectColor", glm::vec3{1.0f,0.5f,1.0f});
+    s.setVec3("objectColor", glm::vec3{0.5f, 0.2f, 0.5f});
 
     glBindVertexArray(vao);
     glDrawArrays(GL_TRIANGLES, 0, 6);
+}
+
+
+glm::vec3 Plane::get_position() const{
+    return this->position;
 }

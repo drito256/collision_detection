@@ -127,3 +127,7 @@ void ParticleSystem::update(float dt){
         particles[i].update(dt);
    }
 }
+
+std::vector<Particle> ParticleSystem::get_particles() const {
+    return this->particles;
+}

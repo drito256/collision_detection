@@ -8,13 +8,14 @@
 
 class Plane{
 public:
-    Plane(float scale);
+    Plane(glm::vec3 position, float scale);
     void render(Shader s);
 
-
+    glm::vec3 get_position() const;
 
 private:
     float scale;
+    glm::vec3 position;
 
     unsigned int vao;
     unsigned int vbo;

@@ -12,6 +12,7 @@
 #include "../include/app/camera.h"
 #include "../include/app/particle_sys.h"
 #include "../include/app/plane.h"
+#include "../include/app/collision_sys.h"
 
 
 #include <iostream>
@@ -76,7 +77,7 @@ int main()
 
     Shader shader("shaders/shader.vs", "shaders/shader.fs");
     ParticleSystem ps(glm::vec3(0.f,0.5f,0.f), 1000);
-    Plane p(10.f);
+    Plane p(glm::vec3(0.f), 10.f);
 
     // configure global opengl state
     // -----------------------------
@@ -113,7 +114,8 @@ int main()
         ps.update((float)glfwGetTime());
         ps.render(shader);
 
-        
+        collision_sys::check_collision(ps.get_particles(), p);    
+
         glfwSwapBuffers(window);
         glfwPollEvents();
    }
