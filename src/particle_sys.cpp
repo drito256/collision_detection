@@ -7,53 +7,58 @@ ParticleSystem::ParticleSystem(glm::vec3 position, int count) :
                                 position{position},
                                 count{count},
                                 vertices{
-                                    Vertex{.pos = {-1, -1, -1}},
-                                    Vertex{.pos = { 1, -1, -1}},
-                                    Vertex{.pos = { 1,  1, -1}},
-                                    Vertex{.pos = { 1,  1, -1}},
-                                    Vertex{.pos = {-1,  1, -1}},
-                                    Vertex{.pos = {-1, -1, -1}},
+                                    // Front face (Z = +1)
+                                    Vertex{.pos = {-1, -1,  1}, .norm = { 0,  0,  1}},
+                                    Vertex{.pos = { 1, -1,  1}, .norm = { 0,  0,  1}},
+                                    Vertex{.pos = { 1,  1,  1}, .norm = { 0,  0,  1}},
+                                    Vertex{.pos = { 1,  1,  1}, .norm = { 0,  0,  1}},
+                                    Vertex{.pos = {-1,  1,  1}, .norm = { 0,  0,  1}},
+                                    Vertex{.pos = {-1, -1,  1}, .norm = { 0,  0,  1}},
 
-                                    Vertex{.pos = {-1, -1,  1}},
-                                    Vertex{.pos = { 1, -1,  1}},
-                                    Vertex{.pos = { 1,  1,  1}},
-                                    Vertex{.pos = { 1,  1,  1}},
-                                    Vertex{.pos = {-1,  1,  1}},
-                                    Vertex{.pos = {-1, -1,  1}},
+                                    // Back face (Z = -1)
+                                    Vertex{.pos = { 1, -1, -1}, .norm = { 0,  0, -1}},
+                                    Vertex{.pos = {-1, -1, -1}, .norm = { 0,  0, -1}},
+                                    Vertex{.pos = {-1,  1, -1}, .norm = { 0,  0, -1}},
+                                    Vertex{.pos = {-1,  1, -1}, .norm = { 0,  0, -1}},
+                                    Vertex{.pos = { 1,  1, -1}, .norm = { 0,  0, -1}},
+                                    Vertex{.pos = { 1, -1, -1}, .norm = { 0,  0, -1}},
 
-                                    Vertex{.pos = {-1,  1,  1}},
-                                    Vertex{.pos = {-1,  1, -1}},
-                                    Vertex{.pos = {-1, -1, -1}},
-                                    Vertex{.pos = {-1, -1, -1}},
-                                    Vertex{.pos = {-1, -1,  1}},
-                                    Vertex{.pos = {-1,  1,  1}},
+                                    // Left face (X = -1)
+                                    Vertex{.pos = {-1, -1, -1}, .norm = {-1,  0,  0}},
+                                    Vertex{.pos = {-1, -1,  1}, .norm = {-1,  0,  0}},
+                                    Vertex{.pos = {-1,  1,  1}, .norm = {-1,  0,  0}},
+                                    Vertex{.pos = {-1,  1,  1}, .norm = {-1,  0,  0}},
+                                    Vertex{.pos = {-1,  1, -1}, .norm = {-1,  0,  0}},
+                                    Vertex{.pos = {-1, -1, -1}, .norm = {-1,  0,  0}},
 
-                                    Vertex{.pos = { 1,  1,  1}},
-                                    Vertex{.pos = { 1,  1, -1}},
-                                    Vertex{.pos = { 1, -1, -1}},
-                                    Vertex{.pos = { 1, -1, -1}},
-                                    Vertex{.pos = { 1, -1,  1}},
-                                    Vertex{.pos = { 1,  1,  1}},
+                                    // Right face (X = +1)
+                                    Vertex{.pos = { 1, -1,  1}, .norm = { 1,  0,  0}},
+                                    Vertex{.pos = { 1, -1, -1}, .norm = { 1,  0,  0}},
+                                    Vertex{.pos = { 1,  1, -1}, .norm = { 1,  0,  0}},
+                                    Vertex{.pos = { 1,  1, -1}, .norm = { 1,  0,  0}},
+                                    Vertex{.pos = { 1,  1,  1}, .norm = { 1,  0,  0}},
+                                    Vertex{.pos = { 1, -1,  1}, .norm = { 1,  0,  0}},
 
-                                    Vertex{.pos = {-1, -1, -1}},
-                                    Vertex{.pos = { 1, -1, -1}},
-                                    Vertex{.pos = { 1, -1,  1}},
-                                    Vertex{.pos = { 1, -1,  1}},
-                                    Vertex{.pos = {-1, -1,  1}},
-                                    Vertex{.pos = {-1, -1, -1}},
+                                    // Bottom face (Y = -1)
+                                    Vertex{.pos = {-1, -1, -1}, .norm = { 0, -1,  0}},
+                                    Vertex{.pos = { 1, -1, -1}, .norm = { 0, -1,  0}},
+                                    Vertex{.pos = { 1, -1,  1}, .norm = { 0, -1,  0}},
+                                    Vertex{.pos = { 1, -1,  1}, .norm = { 0, -1,  0}},
+                                    Vertex{.pos = {-1, -1,  1}, .norm = { 0, -1,  0}},
+                                    Vertex{.pos = {-1, -1, -1}, .norm = { 0, -1,  0}},
 
-                                    Vertex{.pos = {-1,  1, -1}},
-                                    Vertex{.pos = { 1,  1, -1}},
-                                    Vertex{.pos = { 1,  1,  1}},
-                                    Vertex{.pos = { 1,  1,  1}},
-                                    Vertex{.pos = {-1,  1,  1}},
-                                    Vertex{.pos = {-1,  1, -1}}
-                               }
-    {
+                                    // Top face (Y = +1)
+                                    Vertex{.pos = {-1,  1,  1}, .norm = { 0,  1,  0}},
+                                    Vertex{.pos = { 1,  1,  1}, .norm = { 0,  1,  0}},
+                                    Vertex{.pos = { 1,  1, -1}, .norm = { 0,  1,  0}},
+                                    Vertex{.pos = { 1,  1, -1}, .norm = { 0,  1,  0}},
+                                    Vertex{.pos = {-1,  1, -1}, .norm = { 0,  1,  0}},
+                                    Vertex{.pos = {-1,  1,  1}, .norm = { 0,  1,  0}},
+                                }
+                                {
 
     glGenVertexArrays(1, &vao);
     glGenBuffers(1, &vbo);
-
 
     glBindVertexArray(vao);
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
@@ -62,9 +67,15 @@ ParticleSystem::ParticleSystem(glm::vec3 position, int count) :
    glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex) * vertices.size(),
             vertices.data(), GL_DYNAMIC_DRAW);
 
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(glm::vec3), 
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 2 * sizeof(glm::vec3), 
                           (void*)offsetof(Vertex, pos));
     glEnableVertexAttribArray(0);
+
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 2 * sizeof(glm::vec3), 
+                          (void*)offsetof(Vertex, norm));
+    glEnableVertexAttribArray(1);
+
+
 
     glBindVertexArray(0);
     
@@ -102,7 +113,7 @@ void ParticleSystem::render(Shader s){
     glBindVertexArray(vao);
     
     s.use();
-    s.setVec3("color", glm::vec3(0.2f, 0.1f, 0.8f));
+    s.setVec3("objectColor", glm::vec3(0.2f, 0.1f, 0.8f));
     for(int i = 0; i < particles.size(); i++){
         s.setMat4("model", particles[i].get_model());
         glDrawArrays(GL_TRIANGLES, 0, vertices.size());

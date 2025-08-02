@@ -2,7 +2,7 @@
 #define PLANE_H
 
 #include "../glad/glad.h"
-#include "shader.h"
+#include "vertex.h"
 
 #include <vector>
 

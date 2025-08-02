@@ -7,10 +7,7 @@
 #include <array>
 #include <random>
 
-struct Vertex{
-    glm::vec3 pos;
-    // atr atr
-};
+#include "vertex.h"
 
 class ParticleSystem{
 public:
