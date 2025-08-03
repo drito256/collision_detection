@@ -16,15 +16,12 @@ public:
     void scale(const float &factor);
     void translate(const glm::vec3 &new_pos);
 
-    glm::vec4 get_translation(const glm::mat4 &mat) const ;
-    glm::quat get_rotation(const glm::mat4 &mat) const ;
-    float get_scale(const glm::mat4 &mat) const ;
+    glm::vec4 get_translation() const ;
+    glm::quat get_rotation() const ;
+    float get_scale() const ;
 
     void update(const float &dt);
     void render();
-
-    bool check_collision(const Particle &p) const;
-    bool check_collision(const Plane &p) const;
 
 private:
     glm::mat4 model_matrix;

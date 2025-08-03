@@ -22,14 +22,11 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos);
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 void processInput(GLFWwindow *window);
 
-// settings
-const unsigned int SCR_WIDTH = 1600;
-const unsigned int SCR_HEIGHT = 1200;
 
 // camera
-Camera camera(glm::vec3(0.0f, 5.0f, 20.0f));
-float lastX = SCR_WIDTH / 2.0f;
-float lastY = SCR_HEIGHT / 2.0f;
+Camera camera(glm::vec3(0.0f, 5.0f, 30.0f));
+float lastX = Screen::width / 2.0f;
+float lastY = Screen::height / 2.0f;
 bool firstMouse = true;
 
 // timing
@@ -52,7 +49,7 @@ int main()
 
     // glfw window creation
     // --------------------
-    GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "LearnOpenGL", NULL, NULL);
+    GLFWwindow* window = glfwCreateWindow(Screen::width, Screen::height, "LearnOpenGL", NULL, NULL);
     if (window == NULL)
     {
         std::cout << "Failed to create GLFW window" << std::endl;
@@ -76,7 +73,7 @@ int main()
     }
 
     Shader shader("shaders/shader.vs", "shaders/shader.fs");
-    ParticleSystem ps(glm::vec3(0.f,0.5f,0.f), 1000);
+    ParticleSystem ps(glm::vec3(0.f,0.5f,0.f), 10);
     Plane p(glm::vec3(0.f), 10.f);
 
     // configure global opengl state
@@ -87,9 +84,9 @@ int main()
     camera.Front = glm::vec3(0.f) - camera.Position;
 
     while (!glfwWindowShouldClose(window))
-    {float currentFrame = static_cast<float>(glfwGetTime());
-        deltaTime = currentFrame - lastFrame;
-        lastFrame = currentFrame;
+    {
+        float dt = static_cast<float>(glfwGetTime());
+        float sub_dt = dt / Physics::substeps;
         glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -101,7 +98,7 @@ int main()
         
 
 
-        glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float) SCR_WIDTH/ SCR_HEIGHT, 0.1f, 100.0f);
+        glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float) Screen::width / Screen::height, 0.1f, 100.0f);
         glm::mat4 view = camera.GetViewMatrix();
 
 
@@ -111,10 +108,14 @@ int main()
 
         p.render(shader); 
 
-        ps.update((float)glfwGetTime());
+        
+        for(int i = 0 ; i < Physics::substeps ; i++){
+            ps.update(sub_dt);
+            //ps.render(shader);
+            collision_sys::check_collision(ps.get_particles());    
+        }
         ps.render(shader);
-
-        collision_sys::check_collision(ps.get_particles(), p);    
+        
 
         glfwSwapBuffers(window);
         glfwPollEvents();

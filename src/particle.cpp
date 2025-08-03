@@ -10,21 +10,17 @@ Particle::Particle(glm::mat4 model_matrix, glm::vec3 initial_velocity,
                 {};
 
 void Particle::update(const float &dt){
-    const float gravity = 9.81f;
-    glm::vec4 translation = get_translation(this->model_matrix);
+    glm::vec4 translation = get_translation();
     
 
-    for(int i=0;i < Physics::substep;i++){
-        translation =  translation + 
-                      (glm::vec4(0.f, -Physics::gravity * dt * dt / 2.f, 0.f, 0.f) + 
-                       glm::vec4(initial_velocity * dt, 0.0)) / 200.f / 
-                      (float)Physics::substep;
+    translation =  translation + 
+                  (glm::vec4(0.f, -Physics::gravity * (dt   * dt / 2.f) / 2.f, 0.f, 0.f) + 
+                   glm::vec4(initial_velocity * dt, 0.0));
 
-        this->model_matrix = glm::rotate(this->model_matrix, 
-                                         angle / (float) Physics::substep, 
-                                         glm::normalize(initial_rotation));
-        this->model_matrix[3] = translation;
-    }
+    this->model_matrix = glm::rotate(this->model_matrix, 
+                                     angle, 
+                                     glm::normalize(initial_rotation));
+    this->model_matrix[3] = translation;
 }
 
 glm::mat4 Particle::get_model() const {
@@ -41,13 +37,13 @@ void Particle::translate(const glm::vec3 &new_pos){
     this->model_matrix[3] = glm::vec4(new_pos, 1.0f);;
 }
 
-glm::vec4 Particle::get_translation(const glm::mat4 &mat) const {
-    return mat[3];
+glm::vec4 Particle::get_translation() const {
+    return this->model_matrix[3];
 }
 
-glm::quat Particle::get_rotation(const glm::mat4 &mat) const {
+glm::quat Particle::get_rotation() const {
 
-    glm::mat3 rot_scl = glm::mat3(mat);
+    glm::mat3 rot_scl = glm::mat3(this->model_matrix);
 
     glm::vec3 scale; // remove scale component
     scale.x = glm::length(rot_scl[0]);
@@ -64,23 +60,7 @@ glm::quat Particle::get_rotation(const glm::mat4 &mat) const {
     return q;
 }
 
-float Particle::get_scale(const glm::mat4 &mat) const {
-    return glm::length(glm::mat3(mat)[0]);
+float Particle::get_scale() const {
+    return glm::length(glm::mat3(this->model_matrix)[0]);
 }
-
-//TODO
-bool Particle::check_collision(const Particle &p) const {
-
-    return true;
-}
-
-bool Particle::check_collision(const Plane &p) const {
-    float diagonal_length = get_scale(this->model_matrix) * sqrt(3) / 2;
-    if(get_translation(this->model_matrix).y - diagonal_length <=p.get_position().y ){
-        return true;
-    }
-    return false;
-
-}
-
 

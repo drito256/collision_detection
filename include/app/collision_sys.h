@@ -4,6 +4,8 @@
 #include "particle.h"
 #include "plane.h"
 
+#include <array>
+
 class collision_sys{
 public:
     static bool check_collision(const Particle &p, const Plane &pl);
@@ -12,6 +14,8 @@ public:
     static std::pair<int, int> check_collision(const std::vector<Particle> &vec);
 
 private:
+    static std::array<glm::vec3, 3> get_axis(glm::mat4 model);
+    static std::pair<float, float> project_onto_axis(Particle p, glm::vec3 axis);
 
 
 };
