@@ -3,9 +3,9 @@
 in vec3 FragPos;
 in vec3 norm;
 
-out vec4 color;
+uniform vec3 color;
 
-uniform vec3 objectColor;
+out vec4 final_color;
 
 void main()
 {
@@ -18,8 +18,8 @@ void main()
     vec3 ambient = vec3(0.1);
     vec3 diffuse = max(dot(normal, lightDir), 0.0) * lightColor;
     
-    vec3 final = (ambient + diffuse) * objectColor;
-    color = vec4(final, 1.0);
+    vec3 combined = (ambient + diffuse) * color;
+    final_color = vec4(combined, 1.0);
 }
 
 

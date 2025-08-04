@@ -5,7 +5,6 @@
 
 #include <vector>
 #include <array>
-#include <random>
 
 #include "vertex.h"
 
@@ -29,6 +28,7 @@ private:
     unsigned int vao;
     unsigned int vbo;
 
+    float find_max(float v1, float v2);
 };
 
 

@@ -45,7 +45,7 @@ void Plane::render(Shader s){
 
     s.use();
     s.setMat4("model", mat);
-    s.setVec3("objectColor", glm::vec3{0.5f, 0.2f, 0.5f});
+    s.setVec3("color", glm::vec3{0.5f, 0.2f, 0.5f});
 
     glBindVertexArray(vao);
     glDrawArrays(GL_TRIANGLES, 0, 6);

@@ -1,4 +1,5 @@
 #include "../include/app/particle.h"
+#include <random>
 
 
 Particle::Particle(glm::mat4 model_matrix, glm::vec3 initial_velocity,
@@ -11,10 +12,10 @@ Particle::Particle(glm::mat4 model_matrix, glm::vec3 initial_velocity,
 
 void Particle::update(const float &dt){
     glm::vec4 translation = get_translation();
-    
+        
 
     translation =  translation + 
-                  (glm::vec4(0.f, -Physics::gravity * (dt   * dt / 2.f) / 2.f, 0.f, 0.f) + 
+                  (glm::vec4(0.f, -Physics::gravity * (dt   * dt) / 20.f, 0.f, 0.f) + 
                    glm::vec4(initial_velocity * dt, 0.0));
 
     this->model_matrix = glm::rotate(this->model_matrix, 
@@ -64,3 +65,10 @@ float Particle::get_scale() const {
     return glm::length(glm::mat3(this->model_matrix)[0]);
 }
 
+void Particle::set_color(glm::vec3 color){
+    this->color = color;
+}
+
+glm::vec3 Particle::get_color(){
+    return this->color;
+}

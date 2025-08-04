@@ -5,6 +5,8 @@
 #include "constants.h"
 #include "plane.h"
 
+#include <random>
+
 class Particle{
 public:
     Particle(glm::mat4 model_matrix, glm::vec3 initial_velocity,
@@ -23,11 +25,15 @@ public:
     void update(const float &dt);
     void render();
 
+    glm::vec3 get_color();
+    void set_color(glm::vec3 color);
+
 private:
     glm::mat4 model_matrix;
     float angle;
     glm::vec3 initial_velocity;
     glm::vec3 initial_rotation;
+    glm::vec3 color;
 };
 
 #endif

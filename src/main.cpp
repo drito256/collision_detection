@@ -73,8 +73,8 @@ int main()
     }
 
     Shader shader("shaders/shader.vs", "shaders/shader.fs");
-    ParticleSystem ps(glm::vec3(0.f,0.5f,0.f), 10);
-    Plane p(glm::vec3(0.f), 10.f);
+    ParticleSystem ps(glm::vec3(0.f,0.5f,0.f), 100);
+    Plane p(glm::vec3(0.f), 20.f);
 
     // configure global opengl state
     // -----------------------------
@@ -98,7 +98,8 @@ int main()
         
 
 
-        glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float) Screen::width / Screen::height, 0.1f, 100.0f);
+        glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom),
+                               (float) Screen::width / Screen::height, 0.1f, 100.0f);
         glm::mat4 view = camera.GetViewMatrix();
 
 
