@@ -49,7 +49,7 @@ int main()
 
     // glfw window creation
     // --------------------
-    GLFWwindow* window = glfwCreateWindow(Screen::width, Screen::height, "LearnOpenGL", NULL, NULL);
+    GLFWwindow* window = glfwCreateWindow(Screen::width, Screen::height, "spatial partitioning", NULL, NULL);
     if (window == NULL)
     {
         std::cout << "Failed to create GLFW window" << std::endl;
@@ -73,7 +73,7 @@ int main()
     }
 
     Shader shader("shaders/shader.vs", "shaders/shader.fs");
-    ParticleSystem ps(glm::vec3(0.f,0.5f,0.f), 100);
+    ParticleSystem ps(glm::vec3(0.f,0.5f,0.f), 10);
     Plane p(glm::vec3(0.f), 20.f);
 
     // configure global opengl state
@@ -112,7 +112,6 @@ int main()
         
         for(int i = 0 ; i < Physics::substeps ; i++){
             ps.update(sub_dt);
-            //ps.render(shader);
             collision_sys::check_collision(ps.get_particles());    
         }
         ps.render(shader);

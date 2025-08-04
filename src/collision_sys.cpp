@@ -57,18 +57,19 @@ bool collision_sys::check_collision(const Particle &p1, const Particle &p2){
     return true;
 }
 
-std::pair<int,int> collision_sys::check_collision(const std::vector<Particle> &v){
+std::vector<std::pair<int, int>> collision_sys::check_collision(const std::vector<Particle> &v){
+    std::vector<std::pair<int, int>> collision_pair_vec;
+    collision_pair_vec.reserve(v.size());
+
     for(int i = 0; i < v.size(); i++){
-        for(int j = 0; j < v.size(); j++){
-            if(i != j){
-                if(check_collision(v[i], v[j])){
-                    std::cout << "Collision occured " << i << " : "  << j << std::endl;
-                    return std::make_pair(i,j);
-                }
+        for(int j = i + 1; j < v.size(); j++){
+            if(check_collision(v[i], v[j])){
+                std::cout << "Collision occured " << i << " : "  << j << std::endl;
+                collision_pair_vec.emplace_back(i, j);
             }
         }
     }
-    return std::make_pair(-1, -1);
+    return collision_pair_vec;
 }
 
 std::array<glm::vec3, 3> collision_sys::get_axis(glm::mat4 model){

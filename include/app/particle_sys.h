@@ -28,7 +28,6 @@ private:
     unsigned int vao;
     unsigned int vbo;
 
-    float find_max(float v1, float v2);
 };
 
 
