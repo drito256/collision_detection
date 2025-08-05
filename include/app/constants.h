@@ -3,7 +3,7 @@
 
 namespace Physics{
     constexpr float gravity = 9.81f;
-    constexpr int substeps = 8;
+    constexpr int substeps = 4;
     constexpr float sat_epsilon = 1e-6;
 };
 

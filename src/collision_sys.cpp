@@ -54,6 +54,7 @@ bool collision_sys::check_collision(const Particle &p1, const Particle &p2){
         }
     }
 
+    std::cout << "Collision occured " << std::endl; //<< i << " : "  << j << std::endl;
     return true;
 }
 
@@ -72,7 +73,7 @@ std::vector<std::pair<int, int>> collision_sys::check_collision(const std::vecto
     return collision_pair_vec;
 }
 
-std::array<glm::vec3, 3> collision_sys::get_axis(glm::mat4 model){
+std::array<glm::vec3, 3> collision_sys::get_axis(const glm::mat4 &model){
     glm::mat3 mat = glm::mat3(model);
     std::array<glm::vec3 , 3> axis;
 
@@ -83,7 +84,8 @@ std::array<glm::vec3, 3> collision_sys::get_axis(glm::mat4 model){
     return axis;
 };
 
-std::pair<float, float> collision_sys::project_onto_axis(Particle p, glm::vec3 axis) {
+std::pair<float, float> collision_sys::project_onto_axis(const Particle &p, 
+                                                         const glm::vec3 &axis) {
     float radius = 0.f;
     
     std::array<glm::vec3, 3> cube_axis = get_axis(p.get_model());

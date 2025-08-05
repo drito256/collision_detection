@@ -13,6 +13,7 @@
 #include "../include/app/particle_sys.h"
 #include "../include/app/plane.h"
 #include "../include/app/collision_sys.h"
+#include "../include/app/spatial_grid.h"
 
 
 #include <iostream>
@@ -24,7 +25,7 @@ void processInput(GLFWwindow *window);
 
 
 // camera
-Camera camera(glm::vec3(0.0f, 5.0f, 30.0f));
+Camera camera(glm::vec3(-5.0f, 5.0f, 30.0f));
 float lastX = Screen::width / 2.0f;
 float lastY = Screen::height / 2.0f;
 bool firstMouse = true;
@@ -73,7 +74,7 @@ int main()
     }
 
     Shader shader("shaders/shader.vs", "shaders/shader.fs");
-    ParticleSystem ps(glm::vec3(0.f,0.5f,0.f), 10);
+    ParticleSystem ps(glm::vec3(0.f,0.5f,0.f), 100);
     Plane p(glm::vec3(0.f), 20.f);
 
     // configure global opengl state
@@ -82,7 +83,7 @@ int main()
     glEnable(GL_CULL_FACE);
     //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     camera.Front = glm::vec3(0.f) - camera.Position;
-
+    SpatialGrid sg;
     while (!glfwWindowShouldClose(window))
     {
         float dt = static_cast<float>(glfwGetTime());
@@ -112,7 +113,12 @@ int main()
         
         for(int i = 0 ; i < Physics::substeps ; i++){
             ps.update(sub_dt);
-            collision_sys::check_collision(ps.get_particles());    
+            std::vector<std::pair<int, int>> pairs = sg.find_collision_candidates(ps.get_particles());
+            std::cout << pairs.size() << std::endl;
+            //collision_sys::check_collision(ps.get_particles());    
+            for(int i = 0; i < pairs.size(); i++){
+                collision_sys::check_collision(ps.get_particles()[pairs[i].first], ps.get_particles()[pairs[i].second]);
+            }
         }
         ps.render(shader);
         

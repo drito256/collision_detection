@@ -81,8 +81,8 @@ ParticleSystem::ParticleSystem(glm::vec3 position, int count) :
     
     std::random_device rd;
     std::mt19937 gen(rd());
-    std::normal_distribution<> dist(0, 0.01f);
-    std::uniform_real_distribution<> dist2(0.1f, 0.12f);
+    std::normal_distribution<> dist(0.f, 0.01f);
+    std::uniform_real_distribution<> dist2(0.15f, 0.2f);
 
 
     std::uniform_real_distribution<> dist_rot(0.f, 1.f);
@@ -96,7 +96,7 @@ ParticleSystem::ParticleSystem(glm::vec3 position, int count) :
         glm::mat4 mat{1.0f};
 
         Particle p{mat, init_vel, init_rot, angle};
-        p.translate(position);
+        p.translate(position + glm::vec3(dist_rot(gen) - 0.5f, 0.f , dist_rot(gen) - 0.5f) * 10.f);
         p.scale(0.25f);
         p.set_color(glm::vec3(dist_color(gen)));
 
@@ -128,6 +128,6 @@ void ParticleSystem::update(float dt){
    }
 }
 
-std::vector<Particle> ParticleSystem::get_particles() const {
+const std::vector<Particle>& ParticleSystem::get_particles() const {
     return this->particles;
 }
