@@ -14,7 +14,7 @@ bool collision_sys::check_collision(const Particle &p, const Plane &pl){
 int collision_sys::check_collision(const std::vector<Particle> &v, const Plane &pl){
     for(int i = 0; i < v.size(); i++){
         if(check_collision(v[i], pl)){
-            std::cout << "Collision occured " << i <<  std::endl;
+//            std::cout << "Collision occured " << i <<  std::endl;
             //return i;
         }
     }
@@ -54,7 +54,7 @@ bool collision_sys::check_collision(const Particle &p1, const Particle &p2){
         }
     }
 
-    std::cout << "Collision occured " << std::endl; //<< i << " : "  << j << std::endl;
+ //   std::cout << "Collision occured " << std::endl; //<< i << " : "  << j << std::endl;
     return true;
 }
 
@@ -65,7 +65,7 @@ std::vector<std::pair<int, int>> collision_sys::check_collision(const std::vecto
     for(int i = 0; i < v.size(); i++){
         for(int j = i + 1; j < v.size(); j++){
             if(check_collision(v[i], v[j])){
-                std::cout << "Collision occured " << i << " : "  << j << std::endl;
+  //              std::cout << "Collision occured " << i << " : "  << j << std::endl;
                 collision_pair_vec.emplace_back(i, j);
             }
         }

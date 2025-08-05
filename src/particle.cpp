@@ -13,7 +13,7 @@ Particle::Particle(glm::mat4 model_matrix, glm::vec3 initial_velocity,
 void Particle::update(const float &dt){
     glm::vec4 translation = get_translation();
         
-
+    
     translation =  translation + 
                   (glm::vec4(0.f, -Physics::gravity * (dt   * dt) / 20.f, 0.f, 0.f) + 
                    glm::vec4(initial_velocity * dt, 0.0));
@@ -72,3 +72,12 @@ void Particle::set_color(glm::vec3 color){
 glm::vec3 Particle::get_color(){
     return this->color;
 }
+
+void Particle::set_colliding(bool value){
+    this->colliding = value;
+}
+
+bool Particle::is_colliding(){
+    return this->colliding;
+}
+

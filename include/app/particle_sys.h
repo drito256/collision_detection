@@ -13,7 +13,7 @@ public:
     ParticleSystem(glm::vec3 position, int count);
 //    ~ParticleSystem();
 
-    const std::vector<Particle>& get_particles() const;
+    std::vector<Particle>& get_particles();
 
     void update(float dt);
     void render(Shader s);

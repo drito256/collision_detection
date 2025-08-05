@@ -25,7 +25,7 @@ void processInput(GLFWwindow *window);
 
 
 // camera
-Camera camera(glm::vec3(-5.0f, 5.0f, 30.0f));
+Camera camera(glm::vec3(0.0f, 5.0f, 30.0f));
 float lastX = Screen::width / 2.0f;
 float lastY = Screen::height / 2.0f;
 bool firstMouse = true;
@@ -113,11 +113,20 @@ int main()
         
         for(int i = 0 ; i < Physics::substeps ; i++){
             ps.update(sub_dt);
-            std::vector<std::pair<int, int>> pairs = sg.find_collision_candidates(ps.get_particles());
+            std::vector<Particle> &parts = ps.get_particles();
+            std::vector<std::pair<int, int>> pairs = sg.find_collision_candidates(parts); //zasto je pairs.size toliki?
             std::cout << pairs.size() << std::endl;
-            //collision_sys::check_collision(ps.get_particles());    
-            for(int i = 0; i < pairs.size(); i++){
-                collision_sys::check_collision(ps.get_particles()[pairs[i].first], ps.get_particles()[pairs[i].second]);
+
+            for(int j = 0; j < parts.size(); j++){
+                 parts[j].set_colliding(false);
+            }
+
+            for(int j = 0; j < pairs.size(); j++){
+                bool collision = collision_sys::check_collision(parts[pairs[j].first], parts[pairs[j].second]);
+                if(collision){
+                    parts[pairs[j].first].set_colliding(true);
+                    parts[pairs[j].second].set_colliding(true);
+                }
             }
         }
         ps.render(shader);

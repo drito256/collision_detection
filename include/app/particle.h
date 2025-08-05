@@ -23,10 +23,12 @@ public:
     float get_scale() const ;
 
     void update(const float &dt);
-    void render();
 
     glm::vec3 get_color();
     void set_color(glm::vec3 color);
+    
+    void set_colliding(bool value);
+    bool is_colliding();
 
 private:
     glm::mat4 model_matrix;
@@ -34,6 +36,7 @@ private:
     glm::vec3 initial_velocity;
     glm::vec3 initial_rotation;
     glm::vec3 color;
+    bool colliding;
 };
 
 #endif

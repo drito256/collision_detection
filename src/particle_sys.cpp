@@ -2,7 +2,6 @@
 #include <random>
 
 
-
 ParticleSystem::ParticleSystem(glm::vec3 position, int count) : 
                                 position{position},
                                 count{count},
@@ -96,9 +95,13 @@ ParticleSystem::ParticleSystem(glm::vec3 position, int count) :
         glm::mat4 mat{1.0f};
 
         Particle p{mat, init_vel, init_rot, angle};
-        p.translate(position + glm::vec3(dist_rot(gen) - 0.5f, 0.f , dist_rot(gen) - 0.5f) * 10.f);
+        float angle2 = dist_rot(gen) * 2.f * glm::pi<float>();
+        glm::vec3 offset = glm::vec3(sin(angle2), dist_rot(gen) / 10.f, cos(angle2)) * (float)(10.f * dist_color(gen)) ;
+        p.translate(position + offset);
+
         p.scale(0.25f);
         p.set_color(glm::vec3(dist_color(gen)));
+        p.set_colliding(false);
 
         particles.push_back(p);
     }
@@ -115,7 +118,12 @@ void ParticleSystem::render(Shader s){
     s.use();
     for(int i = 0; i < particles.size(); i++){
         s.setMat4("model", particles[i].get_model());
-        s.setVec3("color", particles[i].get_color());
+        if(particles[i].is_colliding()){
+            s.setVec3("color", glm::vec3(0.8f, 0.f, 0.f));
+        }
+        else{
+            s.setVec3("color", particles[i].get_color());
+        }
         glDrawArrays(GL_TRIANGLES, 0, vertices.size());
     }
 
@@ -128,6 +136,6 @@ void ParticleSystem::update(float dt){
    }
 }
 
-const std::vector<Particle>& ParticleSystem::get_particles() const {
+std::vector<Particle>& ParticleSystem::get_particles(){
     return this->particles;
 }
