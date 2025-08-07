@@ -33,7 +33,6 @@ std::vector<std::pair<int, int>> SpatialGrid::find_collision_candidates(const st
                     auto it = grid.find(neighbor_key);
                     if(it != grid.end()) {
                         // Check collisions between current cell and neighbor
-//                        std::cout << "neki kurac" << std::endl;
                         check_cell_pair_collisions(particles, it->second, vec, pairs);
                     }
                 }
@@ -47,7 +46,7 @@ std::vector<std::pair<int, int>> SpatialGrid::find_collision_candidates(const st
 int SpatialGrid::get_cell_key(glm::vec3 pos){
     // treba staviti u klasu
     float edge_length = 2.f * 0.25f;
-    float diagonal_length = sqrt(3.0f) * edge_length;;
+    float diagonal_length = sqrt(3) * edge_length;
     float cell_size = diagonal_length;
     int offset = 1000;
 
