@@ -22,7 +22,7 @@ private:
     int count;
 
     std::vector<Particle> particles;
-    Cube cube; // 1 per system
+    Cube cube_mesh; // 1 per system
 };
 
 

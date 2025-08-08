@@ -5,7 +5,7 @@
 ParticleSystem::ParticleSystem(glm::vec3 position, int count) : 
                                 position{position},
                                 count{count},
-                                cube(Cube())
+                                cube_mesh(Cube())
                                {
 
     std::random_device rd;
@@ -44,7 +44,7 @@ ParticleSystem::ParticleSystem(glm::vec3 position, int count) :
 }*/
 
 void ParticleSystem::render(Shader s){
-    glBindVertexArray(cube.getVAO());
+    glBindVertexArray(cube_mesh.getVAO());
     
     s.use();
     for(int i = 0; i < particles.size(); i++){
@@ -55,7 +55,7 @@ void ParticleSystem::render(Shader s){
         else{
             s.setVec3("color", particles[i].get_color());
         }
-        glDrawArrays(GL_TRIANGLES, 0, (cube.get_vertices()).size());
+        glDrawArrays(GL_TRIANGLES, 0, (cube_mesh.get_vertices()).size());
     }
 
     glBindVertexArray(0);
