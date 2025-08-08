@@ -83,7 +83,7 @@ int main()
     glEnable(GL_CULL_FACE);
     //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     camera.Front = glm::vec3(0.f) - camera.Position;
-    SpatialGrid sg;
+    SpatialGrid sg(2 * 0.25f); // size of edge
     while (!glfwWindowShouldClose(window))
     {
         float dt = static_cast<float>(glfwGetTime());
@@ -109,13 +109,12 @@ int main()
         shader.setMat4("view", view);
 
         p.render(shader); 
-
         
         for(int i = 0 ; i < Physics::substeps ; i++){
             ps.update(sub_dt);
             std::vector<Particle> &parts = ps.get_particles();
-            std::vector<std::pair<int, int>> pairs = sg.find_collision_candidates(parts); //zasto je pairs.size toliki?
-            std::cout << pairs.size() << std::endl;
+            std::vector<std::pair<int, int>> pairs = sg.find_collision_candidates(parts);
+            //std::cout << pairs.size() << std::endl;
 
             for(int j = 0; j < parts.size(); j++){
                  parts[j].set_colliding(false);
@@ -130,6 +129,7 @@ int main()
             }
         }
         ps.render(shader);
+        sg.render(shader);
         
 
         glfwSwapBuffers(window);

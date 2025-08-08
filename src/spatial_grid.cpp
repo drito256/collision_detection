@@ -1,5 +1,8 @@
 #include "../include/app/spatial_grid.h"
 
+SpatialGrid::SpatialGrid(float cell_size) : cell_size{cell_size},
+                                            cube_mesh(Cube()){
+}
 
 void SpatialGrid::clear_grid(){
     this->grid.clear();
@@ -68,6 +71,22 @@ glm::ivec3 SpatialGrid::key_to_grid_coords(int key) const {
         return glm::ivec3(x, y, z);
 }
 
+glm::vec3 SpatialGrid::key_to_world_coords(int key) const {
+    float cell_size = diagonal_length;
+    
+    // First convert key to grid coordinates (this removes the offset)
+    glm::ivec3 grid_coords = key_to_grid_coords(key);
+    std::cout << grid_coords.y << std::endl; 
+    // Convert grid coordinates to world coordinates
+    // This reverses the floor operation in get_cell_key()
+    glm::vec3 world_pos;
+    world_pos.x = grid_coords.x * cell_size;
+    world_pos.y = grid_coords.y * cell_size; 
+    world_pos.z = grid_coords.z * cell_size;
+    
+    return world_pos;
+}
+
 void SpatialGrid::check_cell_pair_collisions(
     const std::vector<int>& cell1_indices,
     const std::vector<int>& cell2_indices,
@@ -89,4 +108,30 @@ void SpatialGrid::check_cell_pair_collisions(
             }
         }
     }
+}
+
+void SpatialGrid::render(Shader s){
+    glBindVertexArray(this->cube_mesh.getVAO());
+    s.use();
+    
+    float cell_size = diagonal_length; // Match the cell size used in get_cell_key
+    
+    for(const auto& pair : grid){
+        glm::mat4 mat(1.0f);
+        
+        // Convert grid coordinates back to world coordinates
+        glm::vec3 world_coords = key_to_world_coords(pair.first);
+        //std::cout << world_coords.y << std::endl;
+        
+        // Position the cube at the center of the cell
+        world_coords += glm::vec3(cell_size * 0.5f); // Center the cube in the cell
+        
+        mat = glm::translate(mat, world_coords);
+        mat = glm::scale(mat, glm::vec3(cell_size)); // Scale cube to match cell size
+        
+        s.setMat4("model", mat);
+        s.setVec3("color", glm::vec3(0, 1, 0));
+        glDrawArrays(GL_TRIANGLES, 0, (this->cube_mesh.get_vertices()).size());
+    }
+    glBindVertexArray(0);
 }
