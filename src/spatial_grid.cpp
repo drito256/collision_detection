@@ -45,8 +45,6 @@ std::vector<std::pair<int, int>> SpatialGrid::find_collision_candidates(const st
 
 int SpatialGrid::get_cell_key(glm::vec3 pos){
     // treba staviti u klasu
-    float edge_length = 2.f * 0.25f;
-    float diagonal_length = sqrt(3) * edge_length;
     float cell_size = diagonal_length;
     int offset = 1000;
 
@@ -70,32 +68,11 @@ glm::ivec3 SpatialGrid::key_to_grid_coords(int key) const {
         return glm::ivec3(x, y, z);
 }
 
-/*void SpatialGrid::check_cell_pair_collisions(
-                                                std::vector<Particle> vec1,
-                                                std::vector<Particle> vec2,
-                                                std::vector<std::pair<int, int>> &pairs){
-    float edge_length = 2.f * 0.25f;
-    float diagonal_length = sqrt(3) * edge_length / 2;
-    float combined_radius = diagonal_length * 2 * 2;
-    for(int i = 0 ; i < vec1.size();i++){
-        for(int j = 0; j < vec2.size();j++){
-            if(glm::length(vec1[i].get_translation() - vec2[j].get_translation()) - combined_radius <= 0){
-                std::cout << "ajomooo" << std::endl;
-                pairs.emplace_back(i, j);
-            }
-        }
-    }
-}*/
-
 void SpatialGrid::check_cell_pair_collisions(
     const std::vector<int>& cell1_indices,
     const std::vector<int>& cell2_indices,
     const std::vector<Particle>& all_particles,
     std::vector<std::pair<int, int>>& pairs) {
-    
-    float edge_length = 2.0f * 0.25f;
-    float diagonal_length = sqrt(3.0f) * edge_length;
-    float combined_radius = diagonal_length;
     
     for(int idx1 : cell1_indices) {
         for(int idx2 : cell2_indices) {

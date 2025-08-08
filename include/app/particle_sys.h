@@ -6,12 +6,11 @@
 #include <vector>
 #include <array>
 
-#include "vertex.h"
+#include "cube.h"
 
 class ParticleSystem{
 public:
-    ParticleSystem(glm::vec3 position, int count);
-//    ~ParticleSystem();
+    ParticleSystem(glm::vec3 position, int count); // particle == cube for now
 
     std::vector<Particle>& get_particles();
 
@@ -23,11 +22,7 @@ private:
     int count;
 
     std::vector<Particle> particles;
-    std::array<Vertex, 36> vertices; // fixed gpu params for cube
-
-    unsigned int vao;
-    unsigned int vbo;
-
+    Cube cube; // 1 per system
 };
 
 

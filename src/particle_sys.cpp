@@ -5,79 +5,9 @@
 ParticleSystem::ParticleSystem(glm::vec3 position, int count) : 
                                 position{position},
                                 count{count},
-                                vertices{
-                                    // Front face (Z = +1)
-                                    Vertex{.pos = {-1, -1,  1}, .norm = { 0,  0,  1}},
-                                    Vertex{.pos = { 1, -1,  1}, .norm = { 0,  0,  1}},
-                                    Vertex{.pos = { 1,  1,  1}, .norm = { 0,  0,  1}},
-                                    Vertex{.pos = { 1,  1,  1}, .norm = { 0,  0,  1}},
-                                    Vertex{.pos = {-1,  1,  1}, .norm = { 0,  0,  1}},
-                                    Vertex{.pos = {-1, -1,  1}, .norm = { 0,  0,  1}},
+                                cube(Cube())
+                               {
 
-                                    // Back face (Z = -1)
-                                    Vertex{.pos = { 1, -1, -1}, .norm = { 0,  0, -1}},
-                                    Vertex{.pos = {-1, -1, -1}, .norm = { 0,  0, -1}},
-                                    Vertex{.pos = {-1,  1, -1}, .norm = { 0,  0, -1}},
-                                    Vertex{.pos = {-1,  1, -1}, .norm = { 0,  0, -1}},
-                                    Vertex{.pos = { 1,  1, -1}, .norm = { 0,  0, -1}},
-                                    Vertex{.pos = { 1, -1, -1}, .norm = { 0,  0, -1}},
-
-                                    // Left face (X = -1)
-                                    Vertex{.pos = {-1, -1, -1}, .norm = {-1,  0,  0}},
-                                    Vertex{.pos = {-1, -1,  1}, .norm = {-1,  0,  0}},
-                                    Vertex{.pos = {-1,  1,  1}, .norm = {-1,  0,  0}},
-                                    Vertex{.pos = {-1,  1,  1}, .norm = {-1,  0,  0}},
-                                    Vertex{.pos = {-1,  1, -1}, .norm = {-1,  0,  0}},
-                                    Vertex{.pos = {-1, -1, -1}, .norm = {-1,  0,  0}},
-
-                                    // Right face (X = +1)
-                                    Vertex{.pos = { 1, -1,  1}, .norm = { 1,  0,  0}},
-                                    Vertex{.pos = { 1, -1, -1}, .norm = { 1,  0,  0}},
-                                    Vertex{.pos = { 1,  1, -1}, .norm = { 1,  0,  0}},
-                                    Vertex{.pos = { 1,  1, -1}, .norm = { 1,  0,  0}},
-                                    Vertex{.pos = { 1,  1,  1}, .norm = { 1,  0,  0}},
-                                    Vertex{.pos = { 1, -1,  1}, .norm = { 1,  0,  0}},
-
-                                    // Bottom face (Y = -1)
-                                    Vertex{.pos = {-1, -1, -1}, .norm = { 0, -1,  0}},
-                                    Vertex{.pos = { 1, -1, -1}, .norm = { 0, -1,  0}},
-                                    Vertex{.pos = { 1, -1,  1}, .norm = { 0, -1,  0}},
-                                    Vertex{.pos = { 1, -1,  1}, .norm = { 0, -1,  0}},
-                                    Vertex{.pos = {-1, -1,  1}, .norm = { 0, -1,  0}},
-                                    Vertex{.pos = {-1, -1, -1}, .norm = { 0, -1,  0}},
-
-                                    // Top face (Y = +1)
-                                    Vertex{.pos = {-1,  1,  1}, .norm = { 0,  1,  0}},
-                                    Vertex{.pos = { 1,  1,  1}, .norm = { 0,  1,  0}},
-                                    Vertex{.pos = { 1,  1, -1}, .norm = { 0,  1,  0}},
-                                    Vertex{.pos = { 1,  1, -1}, .norm = { 0,  1,  0}},
-                                    Vertex{.pos = {-1,  1, -1}, .norm = { 0,  1,  0}},
-                                    Vertex{.pos = {-1,  1,  1}, .norm = { 0,  1,  0}},
-                                }
-                                {
-
-    glGenVertexArrays(1, &vao);
-    glGenBuffers(1, &vbo);
-
-    glBindVertexArray(vao);
-    glBindBuffer(GL_ARRAY_BUFFER, vbo);
-    
-
-   glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex) * vertices.size(),
-            vertices.data(), GL_DYNAMIC_DRAW);
-
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 2 * sizeof(glm::vec3), 
-                          (void*)offsetof(Vertex, pos));
-    glEnableVertexAttribArray(0);
-
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 2 * sizeof(glm::vec3), 
-                          (void*)offsetof(Vertex, norm));
-    glEnableVertexAttribArray(1);
-
-
-
-    glBindVertexArray(0);
-    
     std::random_device rd;
     std::mt19937 gen(rd());
     std::normal_distribution<> dist(0.f, 0.01f);
@@ -96,7 +26,8 @@ ParticleSystem::ParticleSystem(glm::vec3 position, int count) :
 
         Particle p{mat, init_vel, init_rot, angle};
         float angle2 = dist_rot(gen) * 2.f * glm::pi<float>();
-        glm::vec3 offset = glm::vec3(sin(angle2), dist_rot(gen) / 10.f, cos(angle2)) * (float)(10.f * dist_color(gen)) ;
+        glm::vec3 offset = glm::vec3(sin(angle2), dist_rot(gen) / 10.f, 
+                                     cos(angle2)) * (float)(10.f * dist_color(gen)) ;
         p.translate(position + offset);
 
         p.scale(0.25f);
@@ -113,7 +44,7 @@ ParticleSystem::ParticleSystem(glm::vec3 position, int count) :
 }*/
 
 void ParticleSystem::render(Shader s){
-    glBindVertexArray(vao);
+    glBindVertexArray(cube.getVAO());
     
     s.use();
     for(int i = 0; i < particles.size(); i++){
@@ -124,7 +55,7 @@ void ParticleSystem::render(Shader s){
         else{
             s.setVec3("color", particles[i].get_color());
         }
-        glDrawArrays(GL_TRIANGLES, 0, vertices.size());
+        glDrawArrays(GL_TRIANGLES, 0, (cube.get_vertices()).size());
     }
 
     glBindVertexArray(0);

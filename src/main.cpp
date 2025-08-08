@@ -74,7 +74,7 @@ int main()
     }
 
     Shader shader("shaders/shader.vs", "shaders/shader.fs");
-    ParticleSystem ps(glm::vec3(0.f,0.5f,0.f), 100);
+    ParticleSystem ps(glm::vec3(0.f,0.5f,0.f), 500);
     Plane p(glm::vec3(0.f), 20.f);
 
     // configure global opengl state

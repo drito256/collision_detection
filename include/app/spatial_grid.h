@@ -5,6 +5,7 @@
 
 #include <unordered_map>
 #include <vector>
+#include <array>
 
 
 class SpatialGrid{
@@ -12,6 +13,9 @@ public:
     std::vector<std::pair<int, int>> find_collision_candidates(const std::vector<Particle> &vec);
 
 private:
+    const float edge_length = 2.0f * 0.25f; // zasada hardkodirano
+    const float diagonal_length = glm::sqrt(3.0f) * edge_length;
+    const float combined_radius = diagonal_length;
     glm::ivec3 cell;
     std::unordered_map<int, std::vector<int>> grid; // keys - cells,
                                                                  // values - particle id
