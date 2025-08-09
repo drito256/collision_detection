@@ -8,8 +8,8 @@ namespace Physics{
 };
 
 namespace Screen{
-    constexpr int width = 1600;
-    constexpr int height = 1000;
+    constexpr int width = 1920;
+    constexpr int height = 1080;
 };
 
 

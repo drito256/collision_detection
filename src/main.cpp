@@ -74,7 +74,7 @@ int main()
     }
 
     Shader shader("shaders/shader.vs", "shaders/shader.fs");
-    ParticleSystem ps(glm::vec3(0.f,0.5f,0.f), 500);
+    ParticleSystem ps(glm::vec3(0.f,0.5f,0.f), 100);
     Plane p(glm::vec3(0.f), 20.f);
 
     // configure global opengl state
@@ -83,7 +83,7 @@ int main()
     glEnable(GL_CULL_FACE);
     //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     camera.Front = glm::vec3(0.f) - camera.Position;
-    SpatialGrid sg(2 * 0.25f); // size of edge
+    SpatialGrid sg(0.25f); // size of edge
     while (!glfwWindowShouldClose(window))
     {
         float dt = static_cast<float>(glfwGetTime());
@@ -111,10 +111,9 @@ int main()
         p.render(shader); 
         
         for(int i = 0 ; i < Physics::substeps ; i++){
-            ps.update(sub_dt);
+            ps.update(sub_dt/4);
             std::vector<Particle> &parts = ps.get_particles();
             std::vector<std::pair<int, int>> pairs = sg.find_collision_candidates(parts);
-            //std::cout << pairs.size() << std::endl;
 
             for(int j = 0; j < parts.size(); j++){
                  parts[j].set_colliding(false);
@@ -128,8 +127,8 @@ int main()
                 }
             }
         }
-        ps.render(shader);
         sg.render(shader);
+        ps.render(shader);
         
 
         glfwSwapBuffers(window);

@@ -48,42 +48,37 @@ std::vector<std::pair<int, int>> SpatialGrid::find_collision_candidates(const st
 
 int SpatialGrid::get_cell_key(glm::vec3 pos){
     // treba staviti u klasu
-    float cell_size = diagonal_length;
-    int offset = 1000;
+    int offset = 100;
 
-    int x = (int)std::floor(pos.x / cell_size);
-    int y = (int)std::floor(pos.y / cell_size);
-    int z = (int)std::floor(pos.z / cell_size);
+    int x = (int)std::floor(pos.x / diagonal_length);
+    int y = (int)std::floor(pos.y / diagonal_length);
+    int z = (int)std::floor(pos.z / diagonal_length);
 
-    return (x + offset) + (y + offset) * 2000 + (z + offset) * 4000000;
+    return (x + offset) + (y + offset) * 200 + (z + offset) * 400000;
 
 }
 
 int SpatialGrid::get_cell_key_from_grid_coords(glm::ivec3 grid_coords) {
-    int offset = 1000;
-    return (grid_coords.x + offset) + (grid_coords.y + offset) * 2000 + (grid_coords.z + offset) * 4000000;
+    int offset = 100;
+    return (grid_coords.x + offset) + (grid_coords.y + offset) * 200 + (grid_coords.z + offset) * 400000;
 }
 glm::ivec3 SpatialGrid::key_to_grid_coords(int key) const {
-        int offset = 1000;
-        int x = key % 2000 - offset;
-        int y = (key / 2000) % 2000 - offset;
-        int z = key / 4000000 - offset;
+        int offset = 100;
+        int x = key % 200 - offset;
+        int y = (key / 200) % 200 - offset;
+        int z = key / 400000 - offset;
         return glm::ivec3(x, y, z);
 }
 
 glm::vec3 SpatialGrid::key_to_world_coords(int key) const {
-    float cell_size = diagonal_length;
-    
     // First convert key to grid coordinates (this removes the offset)
     glm::ivec3 grid_coords = key_to_grid_coords(key);
-    std::cout << grid_coords.y << std::endl; 
-    // Convert grid coordinates to world coordinates
     // This reverses the floor operation in get_cell_key()
     glm::vec3 world_pos;
-    world_pos.x = grid_coords.x * cell_size;
-    world_pos.y = grid_coords.y * cell_size; 
-    world_pos.z = grid_coords.z * cell_size;
-    
+
+    world_pos.x = grid_coords.x * diagonal_length;
+    world_pos.y = grid_coords.y * diagonal_length;
+    world_pos.z = grid_coords.z * diagonal_length;
     return world_pos;
 }
 
@@ -114,24 +109,22 @@ void SpatialGrid::render(Shader s){
     glBindVertexArray(this->cube_mesh.getVAO());
     s.use();
     
-    float cell_size = diagonal_length; // Match the cell size used in get_cell_key
-    
+    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); 
     for(const auto& pair : grid){
         glm::mat4 mat(1.0f);
         
         // Convert grid coordinates back to world coordinates
+        std::cout << pair.first << std::endl;
         glm::vec3 world_coords = key_to_world_coords(pair.first);
-        //std::cout << world_coords.y << std::endl;
-        
-        // Position the cube at the center of the cell
-        world_coords += glm::vec3(cell_size * 0.5f); // Center the cube in the cell
+        world_coords += glm::vec3(diagonal_length * 0.5f);
         
         mat = glm::translate(mat, world_coords);
-        mat = glm::scale(mat, glm::vec3(cell_size)); // Scale cube to match cell size
+        mat = glm::scale(mat, glm::vec3(diagonal_length));
         
         s.setMat4("model", mat);
         s.setVec3("color", glm::vec3(0, 1, 0));
         glDrawArrays(GL_TRIANGLES, 0, (this->cube_mesh.get_vertices()).size());
     }
+    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL); 
     glBindVertexArray(0);
 }
