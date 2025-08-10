@@ -1,25 +1,31 @@
 #include "../include/app/particle.h"
-#include <random>
 
 
-Particle::Particle(glm::mat4 model_matrix, glm::vec3 initial_velocity,
-                   glm::vec3 initial_rotation, float angle) :
+Particle::Particle(glm::mat4 model_matrix,
+                   glm::vec3 initial_rotation, float rot_angle,
+                   float rev_angle, float rev_radius, float angular_velocity) :
                 model_matrix{model_matrix},
-                initial_velocity{initial_velocity},
                 initial_rotation{initial_rotation},
-                angle{angle}
+                rot_angle{rot_angle},
+                rev_angle{rev_angle},
+                rev_radius{rev_radius},
+                angular_velocity{angular_velocity}
                 {};
 
 void Particle::update(const float &dt){
     glm::vec4 translation = get_translation();
         
     
-    translation =  translation + 
+    /*translation =  translation + 
                   (glm::vec4(0.f, -Physics::gravity * (dt   * dt) / 20.f, 0.f, 0.f) + 
-                   glm::vec4(initial_velocity * dt, 0.0));
+                   glm::vec4(initial_velocity * dt, 0.0));*/
+
+    rev_angle += (angular_velocity);    
+
+    translation = glm::vec4(cos(rev_angle) * rev_radius, translation.y, sin(rev_angle) * rev_radius, 1.0f);;
 
     this->model_matrix = glm::rotate(this->model_matrix, 
-                                     angle, 
+                                     rot_angle, 
                                      glm::normalize(initial_rotation));
     this->model_matrix[3] = translation;
 }

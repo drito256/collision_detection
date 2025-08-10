@@ -10,7 +10,7 @@
 
 class ParticleSystem{
 public:
-    ParticleSystem(glm::vec3 position, int count); // particle == cube for now
+    ParticleSystem(glm::vec3 position, int count, std::pair<float, float> scale_range); // particle == cube for now
 
     std::vector<Particle>& get_particles();
 

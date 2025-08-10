@@ -1,5 +1,3 @@
-
-
 #include "../include/glad/glad.h"
 #include <GLFW/glfw3.h>
 
@@ -74,7 +72,10 @@ int main()
     }
 
     Shader shader("shaders/shader.vs", "shaders/shader.fs");
-    ParticleSystem ps(glm::vec3(0.f,0.5f,0.f), 100);
+
+    std::pair<float, float> scale_range = {0.25f, 0.25f};
+    ParticleSystem ps(glm::vec3(0.f, 0.5f, 0.f), 20, scale_range);
+
     Plane p(glm::vec3(0.f), 20.f);
 
     // configure global opengl state
@@ -151,7 +152,7 @@ void processInput(GLFWwindow *window)
         glfwSetWindowShouldClose(window, true);
 
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-        camera.ProcessKeyboard(FORWARD, deltaTime);
+        camera.ProcessKeyboard(FORWARD, 0.2f);
     if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
         camera.ProcessKeyboard(BACKWARD, deltaTime);
     if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)

@@ -118,6 +118,7 @@ void SpatialGrid::render(Shader s){
         s.setVec3("color", glm::vec3(0, 1, 0));
         glDrawArrays(GL_TRIANGLES, 0, (this->cube_mesh.get_vertices()).size());
     }
+
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL); 
     glBindVertexArray(0);
 }

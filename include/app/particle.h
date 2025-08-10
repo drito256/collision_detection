@@ -9,8 +9,9 @@
 
 class Particle{
 public:
-    Particle(glm::mat4 model_matrix, glm::vec3 initial_velocity,
-             glm::vec3 initial_rotation, float angle);
+    Particle(glm::mat4 model_matrix,
+             glm::vec3 initial_rotation, float rot_angle,
+             float rev_angle, float rev_radius, float angular_velocity);
     ~Particle() = default;
     
     glm::mat4 get_model() const ;
@@ -32,9 +33,11 @@ public:
 
 private:
     glm::mat4 model_matrix;
-    glm::vec3 initial_velocity;
-    glm::vec3 initial_rotation;
-    float angle;
+    glm::vec3 initial_rotation; // rotation axis
+    float rot_angle; // rotation angle
+    float rev_angle; // revolution angle 
+    float rev_radius;
+    float angular_velocity;
     glm::vec3 color;
     bool colliding;
 };
