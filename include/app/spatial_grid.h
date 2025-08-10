@@ -19,6 +19,8 @@ private:
     float cell_size;
     const float diagonal_length = glm::sqrt(3.0f) * cell_size;
     const float combined_radius = diagonal_length;
+    const int offset = 100;             // interval <-100, 100> for coordinates
+    const int stride = offset * 2;
     glm::ivec3 cell;
     std::unordered_map<int, std::vector<int>> grid; // keys - cells,
                                                     // values - particle id

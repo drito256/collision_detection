@@ -32,9 +32,9 @@ public:
 
 private:
     glm::mat4 model_matrix;
-    float angle;
     glm::vec3 initial_velocity;
     glm::vec3 initial_rotation;
+    float angle;
     glm::vec3 color;
     bool colliding;
 };

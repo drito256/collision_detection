@@ -10,7 +10,7 @@ void SpatialGrid::clear_grid(){
 
 void SpatialGrid::fill_grid(const std::vector<Particle> &vec){
 
-    for(int i = 0; i < vec.size(); i++){
+    for(size_t i = 0; i < vec.size(); i++){
         int key = get_cell_key(vec[i].get_translation());
         this->grid[key].push_back(i);
     }
@@ -47,33 +47,28 @@ std::vector<std::pair<int, int>> SpatialGrid::find_collision_candidates(const st
 }
 
 int SpatialGrid::get_cell_key(glm::vec3 pos){
-    // treba staviti u klasu
-    int offset = 100;
 
     int x = (int)std::floor(pos.x / diagonal_length);
     int y = (int)std::floor(pos.y / diagonal_length);
     int z = (int)std::floor(pos.z / diagonal_length);
 
-    return (x + offset) + (y + offset) * 200 + (z + offset) * 400000;
+    return (x + offset) + (y + offset) * stride + (z + offset) * stride * stride;
 
 }
 
 int SpatialGrid::get_cell_key_from_grid_coords(glm::ivec3 grid_coords) {
-    int offset = 100;
-    return (grid_coords.x + offset) + (grid_coords.y + offset) * 200 + (grid_coords.z + offset) * 400000;
+    return (grid_coords.x + offset) + (grid_coords.y + offset) * stride + 
+           (grid_coords.z + offset) * stride * stride;
 }
 glm::ivec3 SpatialGrid::key_to_grid_coords(int key) const {
-        int offset = 100;
-        int x = key % 200 - offset;
-        int y = (key / 200) % 200 - offset;
-        int z = key / 400000 - offset;
+        int x = key % stride - offset;
+        int y = (key / stride) % stride - offset;
+        int z = key / (stride * stride) - offset;
         return glm::ivec3(x, y, z);
 }
 
 glm::vec3 SpatialGrid::key_to_world_coords(int key) const {
-    // First convert key to grid coordinates (this removes the offset)
     glm::ivec3 grid_coords = key_to_grid_coords(key);
-    // This reverses the floor operation in get_cell_key()
     glm::vec3 world_pos;
 
     world_pos.x = grid_coords.x * diagonal_length;
@@ -113,8 +108,6 @@ void SpatialGrid::render(Shader s){
     for(const auto& pair : grid){
         glm::mat4 mat(1.0f);
         
-        // Convert grid coordinates back to world coordinates
-        std::cout << pair.first << std::endl;
         glm::vec3 world_coords = key_to_world_coords(pair.first);
         world_coords += glm::vec3(diagonal_length * 0.5f);
         

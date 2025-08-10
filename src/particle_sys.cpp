@@ -47,7 +47,7 @@ void ParticleSystem::render(Shader s){
     glBindVertexArray(cube_mesh.getVAO());
     
     s.use();
-    for(int i = 0; i < particles.size(); i++){
+    for(size_t i = 0; i < particles.size(); i++){
         s.setMat4("model", particles[i].get_model());
         if(particles[i].is_colliding()){
             s.setVec3("color", glm::vec3(0.8f, 0.f, 0.f));
@@ -62,7 +62,7 @@ void ParticleSystem::render(Shader s){
 }
 
 void ParticleSystem::update(float dt){
-    for(int i = 0; i < particles.size(); i++){
+    for(size_t i = 0; i < particles.size(); i++){
         particles[i].update(dt);
    }
 }

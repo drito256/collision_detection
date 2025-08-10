@@ -2,7 +2,6 @@
 
 
 bool collision_sys::check_collision(const Particle &p, const Plane &pl){
-    glm::mat4 p_model_mat = p.get_model();
     float diagonal_length = p.get_scale() * sqrt(3) / 2.f;
 
     if(p.get_translation().y - diagonal_length > pl.get_position().y)
@@ -12,7 +11,7 @@ bool collision_sys::check_collision(const Particle &p, const Plane &pl){
 }
 
 int collision_sys::check_collision(const std::vector<Particle> &v, const Plane &pl){
-    for(int i = 0; i < v.size(); i++){
+    for(size_t i = 0; i < v.size(); i++){
         if(check_collision(v[i], pl)){
 //            std::cout << "Collision occured " << i <<  std::endl;
             //return i;
@@ -29,15 +28,15 @@ bool collision_sys::check_collision(const Particle &p1, const Particle &p2){
     std::array<glm::vec3, 3> p1_axis = get_axis(p1.get_model());
     std::array<glm::vec3, 3> p2_axis = get_axis(p2.get_model());
 
-    for(int i = 0; i < p1_axis.size(); i++){
+    for(size_t i = 0; i < p1_axis.size(); i++){
         axis.push_back(p1_axis[i]);
     }
-    for(int i = 0; i < p2_axis.size(); i++){
+    for(size_t i = 0; i < p2_axis.size(); i++){
         axis.push_back(p2_axis[i]);
     }
 
-    for(int i = 0; i < p1_axis.size() ; i++){
-        for(int j = 0; j < p2_axis.size(); j++){
+    for(size_t i = 0; i < p1_axis.size() ; i++){
+        for(size_t j = 0; j < p2_axis.size(); j++){
             glm::vec3 cross = glm::cross(p1_axis[i], p2_axis[j]);
             if(cross.length() > Physics::sat_epsilon){
                 axis.push_back(glm::normalize(cross));
@@ -54,7 +53,6 @@ bool collision_sys::check_collision(const Particle &p1, const Particle &p2){
         }
     }
 
- //   std::cout << "Collision occured " << std::endl; //<< i << " : "  << j << std::endl;
     return true;
 }
 
@@ -62,10 +60,9 @@ std::vector<std::pair<int, int>> collision_sys::check_collision(const std::vecto
     std::vector<std::pair<int, int>> collision_pair_vec;
     collision_pair_vec.reserve(v.size());
 
-    for(int i = 0; i < v.size(); i++){
-        for(int j = i + 1; j < v.size(); j++){
+    for(size_t i = 0; i < v.size(); i++){
+        for(size_t j = i + 1; j < v.size(); j++){
             if(check_collision(v[i], v[j])){
-  //              std::cout << "Collision occured " << i << " : "  << j << std::endl;
                 collision_pair_vec.emplace_back(i, j);
             }
         }

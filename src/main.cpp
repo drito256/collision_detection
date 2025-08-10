@@ -111,15 +111,15 @@ int main()
         p.render(shader); 
         
         for(int i = 0 ; i < Physics::substeps ; i++){
-            ps.update(sub_dt/4);
+            ps.update(sub_dt);
             std::vector<Particle> &parts = ps.get_particles();
             std::vector<std::pair<int, int>> pairs = sg.find_collision_candidates(parts);
 
-            for(int j = 0; j < parts.size(); j++){
+            for(size_t j = 0; j < parts.size(); j++){
                  parts[j].set_colliding(false);
             }
 
-            for(int j = 0; j < pairs.size(); j++){
+            for(size_t j = 0; j < pairs.size(); j++){
                 bool collision = collision_sys::check_collision(parts[pairs[j].first], parts[pairs[j].second]);
                 if(collision){
                     parts[pairs[j].first].set_colliding(true);
